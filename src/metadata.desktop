@@ -1,0 +1,23 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Yoga mode switcher
+Name[ru]=Режимы Lenovo Yoga
+Comment=Allows to switch Lenovo Yoga modes
+Comment[ru]=Позволяет переключать режимы Lenovo Yoga
+Type=Service
+ServiceTypes=Plasma/Applet
+Icon=/modeswitcher.png
+
+X-Plasma-API=python
+X-Plasma-MainScript=code/main.py
+X-Plasma-DefaultSize=512,128
+
+X-KDE-PluginInfo-Name=lenovo-yoga-switcher
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Author=Konstantin Enchant
+X-KDE-PluginInfo-Email=sirkonst@gmail.com
+X-KDE-PluginInfo-Website=https://github.com/sirkonst/plamoid-yoga-switcher
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-Category=System Information
+X-KDE-PluginInfo-License=MIT
+X-KDE-PluginInfo-Depends=
