@@ -8,9 +8,6 @@ from PyKDE4 import plasmascript
 
 from PyQt4.QtCore import Qt
 from PyQt4 import QtGui
-
-import dbus
-from dbus.mainloop.qt import DBusQtMainLoop
 # ------------------------------------------------------------------------------
 TOUCHPAD = "SynPS/2 Synaptics TouchPad"
 TRACKPOINT = "TPPS/2 IBM TrackPoint"
@@ -31,8 +28,6 @@ class YogaModesPlasmoid(plasmascript.Applet):
 
     def __init__(self, parent, args=None):
         plasmascript.Applet.__init__(self, parent)
-        # self.dbusloop = DBusQtMainLoop()
-        # self.bus = dbus.SessionBus(mainloop=self.dbusloop)
 
     def init(self):
         self.setHasConfigurationInterface(False)
@@ -59,6 +54,7 @@ class YogaModesPlasmoid(plasmascript.Applet):
                 self.package().path() + "contents/images/mode-tend.png"),
             "", self.applet
         )
+        self.target = Plasma.ItemBackground(self.applet)
 
         # -- some logic
         self.icon_laptop.clicked.connect(self.set_laptop_mode)
@@ -75,7 +71,10 @@ class YogaModesPlasmoid(plasmascript.Applet):
 
         self.applet.setLayout(layout)
 
+        self.set_laptop_mode()
+
     def set_laptop_mode(self):
+        self.target.setTargetItem(self.icon_laptop)
         xinput("enable", TOUCHPAD)
         xinput("enable", TRACKPOINT)
         xrandr("--screen", "0", "-o", "normal")
@@ -83,6 +82,7 @@ class YogaModesPlasmoid(plasmascript.Applet):
         xinput("set-prop", WACOMPEN, "Wacom Rotation", "0")
 
     def set_tablet_mode(self):
+        self.target.setTargetItem(self.icon_tablet)
         xinput("disable", TOUCHPAD)
         xinput("disable", TRACKPOINT)
         xrandr("--screen", "0", "-o", "normal")
@@ -90,9 +90,15 @@ class YogaModesPlasmoid(plasmascript.Applet):
         xinput("set-prop", WACOMPEN, "Wacom Rotation", "0")
 
     def set_stand_mode(self):
-        self.set_tablet_mode()
+        self.target.setTargetItem(self.icon_stand)
+        xinput("disable", TOUCHPAD)
+        xinput("disable", TRACKPOINT)
+        xrandr("--screen", "0", "-o", "normal")
+        xinput("set-prop", TOUCHSCREEN, "Evdev Axis Inversion", "0,", "0")
+        xinput("set-prop", WACOMPEN, "Wacom Rotation", "0")
 
     def set_tend_mode(self):
+        self.target.setTargetItem(self.icon_tend)
         xinput("disable", TOUCHPAD)
         xinput("disable", TRACKPOINT)
         xrandr("--screen", "0", "-o", "inverted")
